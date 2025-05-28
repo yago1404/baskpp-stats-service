@@ -1,3 +1,5 @@
+from asyncpg import ForeignKeyViolationError
+
 from models.dtos.add_play_dto import AddPlayDto
 from models.exceptions.not_found_exception import AppNotFound
 from models.median import Median
@@ -87,10 +89,13 @@ class StatsService:
         return median
 
     async def add_play(self, player_id: str, play: AddPlayDto):
-        await self.repository.add_play(player_id,
-                                       play.game_id, play.court_locate, play.free_throw, play.failure_free_throw,
-                                       play.two_point, play.failure_two_point, play.three_point,
-                                       play.failure_three_point, play.assist, play.steal, play.rebound,
-                                       play.block, play.falt, play.turnover)
+        try:
+            await self.repository.add_play(player_id,
+                                           play.game_id, play.court_locate, play.free_throw, play.failure_free_throw,
+                                           play.two_point, play.failure_two_point, play.three_point,
+                                           play.failure_three_point, play.assist, play.steal, play.rebound,
+                                           play.block, play.falt, play.turnover)
+        except ForeignKeyViolationError:
+            raise AppNotFound('Jogo não encontrado')
 
         return
