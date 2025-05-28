@@ -64,12 +64,17 @@ class StatsService:
 
         games = set(games)
 
+        free_trow_median = sum(free_trow) / len(games)
+        two_points_median = sum(two_points) / len(games)
+        three_points_median = sum(tree_points) / len(games)
+
         median: Median = Median(
-            sum(free_trow) / len(games),
+            free_trow_median + (two_points_median * 2) + (three_points_median * 3),
+            free_trow_median,
             sum(failure_free_trow) / len(games),
-            sum(two_points) / len(games),
+            two_points_median,
             sum(failure_two_points) / len(games),
-            sum(tree_points) / len(games),
+            three_points_median,
             sum(failure_tree_points) / len(games),
             sum(assists) / len(games),
             sum(steals) / len(games),

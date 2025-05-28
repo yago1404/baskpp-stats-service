@@ -1,9 +1,9 @@
 class Median:
-    def __init__(self, free_trow: float, failure_free_trow: float,
+    def __init__(self, points: float, free_trow: float, failure_free_trow: float,
                  two_points: float, failure_two_points: float, tree_points: float, failure_tree_points: float,
                  assists: float,
                  steals: float, rebounds: float, blocks: float, falts: float, turnovers: float):
-        self.points = (free_trow + (two_points * 2) + (tree_points * 3)) / 3
+        self.points = points
         self.free_trow = free_trow
         self.failure_free_trow = failure_free_trow
         self.two_points = two_points
