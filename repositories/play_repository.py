@@ -11,7 +11,22 @@ class PlayRepository:
         self.databaseConnection: asyncpg.connection.Connection = database_connection
 
     async def find_play_by_player_id(self, player_id: str) -> list[Stat]:
-        rows = await self.databaseConnection.fetch('SELECT * FROM plays p WHERE p.player = $1', player_id)
+        rows = await self.databaseConnection.fetch('''
+        SELECT p.*
+        FROM plays p
+        JOIN games g ON p.game = g.id
+        WHERE p.player = $1
+          AND p.game IN (
+              SELECT g_sub.id
+              FROM games g_sub
+              JOIN plays p_sub ON g_sub.id = p_sub.game
+              WHERE p_sub.player = $1
+              GROUP BY g_sub.id, g_sub.date_time
+              ORDER BY g_sub.date_time DESC
+              LIMIT 15
+          )
+        ORDER BY g.date_time DESC;
+        ''', player_id)
         stats = [Stat.from_dict(dict(row)) for row in rows]
         return stats
 
