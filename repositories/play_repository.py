@@ -1,7 +1,4 @@
-from typing import Any, Coroutine
-
 import asyncpg
-from asyncpg import Record
 
 from models.stat import Stat
 
