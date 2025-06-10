@@ -2,7 +2,8 @@ class Median:
     def __init__(self, points: float, free_trow: float, failure_free_trow: float,
                  two_points: float, failure_two_points: float, tree_points: float, failure_tree_points: float,
                  assists: float,
-                 steals: float, rebounds: float, blocks: float, falts: float, turnovers: float):
+                 steals: float, rebounds: float, blocks: float, falts: float, turnovers: float, game_id=None):
+        self.game_id = game_id
         self.points = points
         self.free_trow = free_trow
         self.failure_free_trow = failure_free_trow
