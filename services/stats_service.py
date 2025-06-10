@@ -11,7 +11,7 @@ class StatsService:
     def __init__(self, repository: PlayRepository):
         self.repository: PlayRepository = repository
 
-    async def get_player_stats(self, player_id: str):
+    async def get_player_plays(self, player_id: str):
         plays: list[Stat] = await self.repository.find_play_by_player_id(player_id)
 
         if plays is None or len(plays) == 0:
@@ -20,7 +20,7 @@ class StatsService:
         return plays
 
     async def get_player_medians(self, player_id: str):
-        stats: list[Stat] = await self.get_player_stats(player_id)
+        stats: list[Stat] = await self.get_player_plays(player_id)
 
         games = []
 
