@@ -19,6 +19,27 @@ class StatsService:
 
         return plays
 
+    async def get_player_stats(self, player_id: str):
+        plays: list[Stat] = await self.get_player_plays(player_id)
+        games: list[Median] = []
+
+        for play in plays:
+            game_stats: Median | None = None
+
+            for game in games:
+                if game.game_id == play.game_id:
+                    games.remove(game)
+                    game_stats = game
+                    break
+
+            if game_stats is None:
+                game_stats = Median.empty(game_id=play.game_id)
+
+            game_stats.add_play(play)
+            games.append(game_stats)
+
+        return games
+
     async def get_player_medians(self, player_id: str):
         stats: list[Stat] = await self.get_player_plays(player_id)
 
